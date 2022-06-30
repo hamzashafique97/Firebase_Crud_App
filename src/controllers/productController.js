@@ -1,15 +1,19 @@
 const { products } = require('../database/db');
 
+
 module.exports = {
     async create(req, res) {
         try {
-            const { name, price, description } = req.body;
-            const product = {
-                name,
-                price,
-                description
-            };
-            const newProduct = await products.add(product);
+            
+            
+            // const { name, price, description } = req.body;
+            // const product = {
+            //     name,
+            //     price,
+            //     description
+            // };
+            
+            await products.add(req.body);
             res.json({
                 message: "Product created successfully",
                 data: newProduct
@@ -24,7 +28,9 @@ module.exports = {
 
     async getAll(req, res) {
         try {
-            const data = await products.get();
+            const data = await await (await products.get()).docs.map(doc => doc.data());
+
+            console.log(data);
             res.json({
                 message: "Products retrieved successfully",
                 data: data
@@ -35,5 +41,5 @@ module.exports = {
                 message: err.message
             });
         }
-    }
+    },
 }
