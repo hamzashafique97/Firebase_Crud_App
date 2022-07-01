@@ -2,12 +2,8 @@ const admin = require("firebase-admin");
 
 const db = admin.firestore();
 
-const products = db.collection("products");
-
-const user = db.collection("user");
-
+const cities = db.collection("cities");
 
 module.exports = {
-    products,
-    user
+    cities
 }
