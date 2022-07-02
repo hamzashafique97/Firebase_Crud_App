@@ -28,6 +28,11 @@ module.exports = {
                 capital: true
             }, { merge: true });
 
+
+            // const messageRef = db.collection('rooms').doc('roomA')
+            //     .collection('messages').doc('message1');
+
+
             res.json({ message: "created successfully" });
         } catch (err) {
             res.status(500).json({ message: err.message });
@@ -61,7 +66,12 @@ module.exports = {
         try {
 
             /** But sometimes there isn't a meaningful ID for the document, and it's more convenient to 
-             * let Cloud Firestore auto-generate an ID for you. You can do this by calling add():*/
+             * let Cloud Firestore auto-generate an ID for you. You can do this by calling add():
+             
+             * Unlike "push IDs" in the Firebase Realtime Database, Cloud Firestore auto-generated IDs 
+             * do not provide any automatic ordering. If you want to be able to order your documents 
+             * by creation date, you should store a timestamp as a field in the documents.
+             * */
 
             // Add a new document with a generated id.
             const res = await cities.add({
@@ -75,7 +85,29 @@ module.exports = {
         } catch (err) {
             res.status(500).json({ message: err.message });
         }
+    },
+
+    async test4(req, res) {
+        try {
+
+            console.log(req.body);
+
+        
+            const queryRef = await cities.where('country', '==', req.body.country ).where('name', '==' ,req.body.name).get().then(snapshot => {
+                snapshot.forEach(doc => {
+                    console.log(doc.id, '=>', doc.data());
+                });
+            }).catch(err => {
+                console.log('Error getting documents', err);
+            });
+
+            res.json({ message: "successfully" });
+
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        }
     }
+
 
 
 }

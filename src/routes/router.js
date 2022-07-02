@@ -10,5 +10,7 @@ router.post('/test2',testController.test2);
 
 router.post('/test3',testController.test3);
 
+router.post('/test4',testController.test4);
+
 
 module.exports = router;
